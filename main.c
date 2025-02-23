@@ -1,17 +1,7 @@
-﻿/*#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <locale.h>*/
-#include "header.h"
+﻿#include "header.h"
 
 int compareStrings(const void* str1, const void* str2)
 {
-    //return strcasecmp(*(const char**)str1, *(const char**)str2);
     return strcoll(*(const char**)str1, *(const char**)str2);
 }
 
@@ -26,7 +16,6 @@ void getFilesNames(char* sourceDirPath, char** options, char*** filesNames, int*
     DIR* currentDir = opendir(dirPath);
     if (currentDir == NULL) 
     {
-        //printf("Error opening the directory '%s': %s\n", dirPath, strerror(errno));
         printf("dirwalk: '%s': %s\n", dirPath, strerror(errno));
         return;
     }
@@ -49,10 +38,6 @@ void getFilesNames(char* sourceDirPath, char** options, char*** filesNames, int*
             //перемещаем указатель с начала строки на длину пути к каталогу, где была вызвана программа
             relativePath = relativePath + strlen(sourceDirPath) - 1;
             relativePath[0] = '.';
-            /*if ((strcmp(currentFile->d_name, ".") == 0 || strcmp(currentFile->d_name, "..") == 0) && *amountOfFiles < 2)
-            {
-                relativePath += 2;
-            }*/
             strcpy((*filesNames)[*amountOfFiles], relativePath);
             (*amountOfFiles)++;
             //выделение памяти под новую строку
