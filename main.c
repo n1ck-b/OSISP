@@ -1,4 +1,4 @@
-﻿#include "header.h"
+#include "header.h"
 
 int compareStrings(const void* str1, const void* str2)
 {
@@ -20,8 +20,8 @@ void getFilesNames(char* sourceDirPath, char** options, char*** filesNames, int*
         return;
     }
     struct dirent *currentFile;
-    char* fileName = (char*)calloc(sizeof(char), 150);
-    char* filePath = (char*)calloc(sizeof(char), PATH_MAX);
+    char* fileName = (char*)calloc(150, sizeof(char));
+    char* filePath = (char*)calloc(500, sizeof(char));
     struct stat statBuffer;
     while ((currentFile = readdir(currentDir))!= NULL) 
     {
@@ -31,7 +31,7 @@ void getFilesNames(char* sourceDirPath, char** options, char*** filesNames, int*
         lstat(filePath, &statBuffer);
         if ((strstr(*options, "l") && S_ISLNK(statBuffer.st_mode)) || (strstr(*options, "d") && S_ISDIR(statBuffer.st_mode) && strcmp(currentFile->d_name, ".") != 0 && strcmp(currentFile->d_name, "..") != 0) || (strstr(*options, "f") && S_ISREG(statBuffer.st_mode)))
         {
-            char* relativePath = (char*)calloc(sizeof(char), PATH_MAX);
+            char* relativePath = (char*)calloc(400, sizeof(char));
             char *tmp = relativePath;
             //копируем строку filePath, где содержится абсолютный путь к файлу, в строку relativePath
             strcpy(relativePath, filePath);
@@ -43,7 +43,7 @@ void getFilesNames(char* sourceDirPath, char** options, char*** filesNames, int*
             //выделение памяти под новую строку
             *filesNames = (char **)realloc(*filesNames, sizeof(char *) * (*amountOfFiles + 1));
             //выделение памяти под 250 символов в новой строке
-            (*filesNames)[*amountOfFiles] = (char*)calloc(sizeof(char), 250);
+            (*filesNames)[*amountOfFiles] = (char*)calloc(250, sizeof(char));
             //перевыделение памяти в последней заполненной строке
             (*filesNames)[*amountOfFiles - 1] = (char*)realloc((*filesNames)[*amountOfFiles - 1], sizeof(char)* (strlen((*filesNames)[*amountOfFiles - 1])+ 1));
             free(tmp);
@@ -61,9 +61,9 @@ void getFilesNames(char* sourceDirPath, char** options, char*** filesNames, int*
 int main(int argc, char* argv[])
 {
     setlocale(LC_COLLATE, "ru_RU.UTF-8");
-    char* options = (char*)calloc(sizeof(char), 4);
+    char* options = (char*)calloc(4, sizeof(char));
     int numOfOptions = 0;
-    char* path = (char*)calloc(sizeof(char), 200);
+    char* path = (char*)calloc(200, sizeof(char));
     int res;
     while ((res = getopt(argc, argv, "ldfs"))!= -1)
     {
@@ -87,8 +87,8 @@ int main(int argc, char* argv[])
         getcwd(path, 200);
     else
         strcpy(path, argv[numOfOptions+1]);
-    char** filesNames = (char**)calloc(sizeof(char*), 1);
-    *filesNames = (char*)calloc(sizeof(char), 250);
+    char** filesNames = (char**)calloc(1, sizeof(char*));
+    *filesNames = (char*)calloc(250, sizeof(char));
     int amountOfFiles = 0;
     getFilesNames(path, &options, &filesNames, &amountOfFiles, path);
     if (strstr(options, "s"))
