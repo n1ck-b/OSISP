@@ -33,7 +33,7 @@ void getParentEnvVariables()
 
 char** getChildEnvVariables(int *numOfChildEnvVariables) 
 {
-    FILE* envFile = fopen("/home/nikita/Labs/lab2/.env", "r");
+    FILE* envFile = fopen("", "r");
     if (envFile == NULL) 
     {
         printf("Ошибка открытия файла env\n");
@@ -85,7 +85,7 @@ void startChildProcess(int* numOfChildProcesses, char* childPath, int option, ch
     strcpy(args[0], "child_");
     args[0] = strcat(args[0], seqNum);
     if (option == '+')
-        strcpy(args[1], "/home/nikita/Labs/lab2/.env");
+        strcpy(args[1], "");
     if (option == '*')
         args[1] = NULL;
     args[2] = (char*)0;
