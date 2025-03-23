@@ -1,7 +1,6 @@
 #include "header.h"
 
 typedef void (*sighandler_t)(int);
-//sighandler_t sa_handler;
 
 struct twoNumbers {
     int first;
@@ -19,7 +18,6 @@ int signalWasReceived = 0;
 
 void alarmHandler(int signum)
 {
-    //printf("Обработчик сигнала\n");
     if (numbers.first == 0 && numbers.second == 0) 
     {
         stats.twoZeros++;
@@ -41,25 +39,11 @@ void alarmHandler(int signum)
 
 void sigUsr1Handler(int signum)
 {
-    //printf("\nобработчик usr1 pid = %d\n", getpid());
     raise(SIGTERM);
 }
 
 int main(int argc, char* argv[]) 
 {
-    /*timer_t timerId;
-    struct sigevent sev;
-    sev.sigev_notify = SIGEV_SIGNAL;
-    sev.sigev_signo = SIGALRM;
-    timer_create(CLOCK_REALTIME, &sev, &timerId);
-    struct timespec time;
-    time.tv_nsec = 50000;
-    time.tv_sec = 0;
-    struct itimerspec its;
-    its.it_value = time;
-    //its.it_interval = time;
-    its.it_interval.tv_sec = 0;
-    its.it_interval.tv_nsec = 0;*/
     struct twoNumbers zeros = {0, 0};
     struct twoNumbers ones = {1, 1};
     //обработка сигнала SIGALRM
@@ -75,26 +59,6 @@ int main(int argc, char* argv[])
     sigemptyset(&newActionForSigUsr1.sa_mask);
     newActionForSigUsr1.sa_flags= 0;
     sigaction(SIGUSR1, &newActionForSigUsr1, NULL);
-    /*for (int i = 0; i < 500; ++i) 
-    {
-        //printf("Цикл for %d\n", i);
-        if(nanosleep(&time, NULL) == 0)
-        {
-            raise(SIGALRM);
-        }
-        ualarm(100, 0);
-        //timer_settime(timerId, 0, &its, NULL);
-        signalWasReceived = 0;
-        while (1) 
-        {
-            numbers = zeros;
-            numbers = ones;
-            if (signalWasReceived == 1)
-            {
-                break;
-            }   
-        }
-    }*/
     int counter = 0;
     while (1) 
     {
