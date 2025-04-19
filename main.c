@@ -76,7 +76,6 @@ int main(int argc, char* argv[]) {
     int shmIdOfQueue = initialiseSharedMemoryForQueue();
     producers = (pid_t*)calloc(1, sizeof(pid_t));
     consumers = (pid_t*)calloc(1, sizeof(pid_t));
-    //queue = (MessagesQueue*)calloc(1, sizeof(MessagesQueue));
     int addSemId = semget(ADD_SEM_KEY, 1, IPC_CREAT | 0666);
     if(addSemId == -1) {
         printf("Ошибка создания семафора для добавленных сообщений: %d\n", errno);
@@ -90,15 +89,10 @@ int main(int argc, char* argv[]) {
     initQueue(queue, freeSemId, addSemId);
     while(1) {
         printf("Выберите одну из опций:\n'P' - породить процесс-производитель\n'C' - породить процесс-потребитель\n'p' - удалить процесс-производитель\n'c' - удалить процесс-потребитель\n'i' - просмотреть информацию о текущем состоянии\n'e' - завершение программы\n");
-//        option = getchar();
         scanf(" %c", &option);
         while (getchar() != '\n') {};
         switch(option) {
             case 'P':
-//                if(createNewProducer() != -1) {
-//                    numOfProducers++;
-//                    producers = (pid_t*)realloc(producers, numOfProducers * sizeof(pid_t));
-//                }
                 createNewProducer();
                 break;
             case 'C':
@@ -111,11 +105,9 @@ int main(int argc, char* argv[]) {
                 deleteConsumer();
                 break;
             case 'i':
-                //sendSignals(SIGSTOP);
                 printf("\nРазмер очереди = %d, добавлено сообщений = %d, свободно места = %d, количество производителей = %d, количество потребителей = %d\n", queue->size,
                        getValueOfSemaphore(queue->addedMessages), getValueOfSemaphore(queue->freeSpace), numOfProducers, numOfConsumers);
                 sleep(3);
-                //sendSignals(SIGCONT);
                 break;
             case 'e':
                 //завершение всех процессов-производителей
@@ -148,9 +140,6 @@ int main(int argc, char* argv[]) {
                 return 0;
             default:
                 printf("Введена неверная опция\n");
-//                struct shmid_ds shmidDs;
-//                shmctl(shmIdOfQueue, IPC_STAT, &shmidDs);
-//                printf("\nnattch = %lu, size = %zu\n", shmidDs.shm_nattch, shmidDs.shm_segsz);
                 break;
         }
     }

@@ -34,16 +34,7 @@ int createNewProducer() {
 }
 
 Message createMessage() {
-    //Message* message = (Message*)calloc(1, sizeof(Message));
     Message message;
-//    message->size = rand() % 256 + 1;
-//    message->data = (char*)calloc(((message->size + 3)/4)*4, sizeof(char));
-//    for(int i = 0; i < message->size; i++) {
-//        message->data[i] = rand() % 256;
-//    }
-//    message->hash = 0;
-//    message->hash = calculateHash(message->data, message->size + 1);
-//    return message;
     message.type = 0;
     unsigned short tmp = rand() % 256 + 1;
     if(tmp < 256) {
@@ -51,13 +42,11 @@ Message createMessage() {
     } else {
         message.size = tmp - 1;
     }
-    //message.data = (char*)calloc(((message.size + 3)/4)*4, sizeof(char));
     for(int i = 0; i < ((message.size + 3)/4)*4; i++) {
         message.data[i] = rand() % 256;
     }
     message.hash = 0;
     message.hash = calculateHash(message.data, message.size + 1);
-    //printf("\nСозданное сообщение: data=%s, hash=%x, size=%d\n", message.data, message.hash, message.size);
     return message;
 }
 
