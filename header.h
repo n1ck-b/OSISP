@@ -8,3 +8,4 @@
 #include <errno.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <sys/shm.h>

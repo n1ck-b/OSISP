@@ -5,6 +5,6 @@
 #include "message.h"
 
 int createNewProducer();
-Message* createMessage();
+Message createMessage();
 void deleteProducer();
 #endif

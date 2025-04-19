@@ -1,6 +1,12 @@
 #include "header.h"
 #include "messagesQueue.h"
 
+union semun {
+    int val;
+    struct semid_ds *buf;
+    unsigned short  *array;
+};
+
 void initQueue(MessagesQueue *q, int semFreeSpace, int semAddedMessages) {
     q->front = -1;
     q->rear = -1;
@@ -8,8 +14,11 @@ void initQueue(MessagesQueue *q, int semFreeSpace, int semAddedMessages) {
     q->addedMessages = semAddedMessages;
     q->freeSpace = semFreeSpace;
     q->retrievedMessages = 0;
-    semctl(semAddedMessages, 0, SETVAL, 0);
-    semctl(semFreeSpace, 0, SETVAL, SIZE);
+    union semun arg;
+    arg.val = 0;
+    semctl(semAddedMessages, 0, SETVAL, arg);
+    arg.val = SIZE;
+    semctl(semFreeSpace, 0, SETVAL, arg);
 }
 
 int isFull(MessagesQueue *q) {
@@ -23,6 +32,7 @@ int isEmpty(MessagesQueue *q) {
 }
 
 void push(MessagesQueue *q, Message message) {
+    //printf("\ninside push message: data=%s, size=%d, hash=%x\n", message.data, message.size, message.hash);
     if(isFull(q)) {
         printf("Очередь заполнена\n");
         return;
@@ -40,7 +50,17 @@ void push(MessagesQueue *q, Message message) {
 }
 
 Message pop(MessagesQueue *q) {
+    if(isEmpty(q)) {
+        printf("Очередь пуста\n");
+        Message emptyMessage = {0};
+        return emptyMessage;
+    }
+    //printf("\ninside pop\n");
     Message message = q->messages[q->front];
+//    if(message.data==NULL) {
+//        printf("\nmessage data is null\n");
+//    }
+    //printf("\ninside pop message: data=%s, size=%d, hash=%x\n", message.data, message.size, message.hash);
     if (q->front == q->rear) {
         q->front = q->rear = -1;
     } else {

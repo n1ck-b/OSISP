@@ -5,10 +5,10 @@
 
 typedef struct {
     char type;
-    short hash;
-    char size;
-    char* data;
+    unsigned short hash;
+    unsigned char size;
+    char data[260];
 } Message;
 
-int calculateHash(const char *data, int length);
+unsigned short calculateHash(const char *data, int length);
 #endif
