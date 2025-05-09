@@ -3,6 +3,4 @@
 
 #define MAX_CLUSTERS 65535
 
-unsigned short FAT[MAX_CLUSTERS]; //таблица размещения файлов - FAT
-
 #endif //COURSEWORK_FAT_H

@@ -6,9 +6,9 @@ typedef struct FSInfo {
     int numOfFirstFreeCluster; //номер первого свободного кластера
     int numOfTotalClusters; //общее число кластеров
     unsigned short sizeOfClusterInBytes; //размер кластера в байтах
-    int sizeOfFatInClusters; //размер таблицы FAT в кластерах
-    unsigned short startOfFat; //номер кластера, с которого начинается FAT
-    unsigned short startOfData; //номер кластера, с которого начинается блок данных
+    int sizeOfFatInBytes; //размер таблицы FAT в байтах
+    unsigned short startOfFat; //номер байта, с которого начинается FAT
+    unsigned startOfData; //номер байта, с которого начинается блок данных
 } FSInfo;
 
 #endif //COURSEWORK_FSINFO_H
