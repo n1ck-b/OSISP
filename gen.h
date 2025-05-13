@@ -3,8 +3,8 @@
 
 #include "sort_index.h"
 
-//модификатор дня 10.05.2025
-#define MODIFIER_JD 60805
+//модификатор дня 12.05.2025
+#define MODIFIER_JD 60807
 
 typedef struct {
     double timeMark; // временная метка (модифицированная юлианская дата)

@@ -1,12 +1,12 @@
 #include "gen.h"
 
-int generateFile(const char* fileName, size_t records) {
-    Index indexes[records];
+int generateFile(const char* fileName, uint64_t records) {
+    Index* indexes = (Index*)calloc(records, sizeof(Index));
     int integerPart;
     double fractionalPart;
     //установка новой последовательности случайных чисел
     srand(time(NULL));
-    for (size_t i = 0; i < records; i++) {
+    for (uint64_t i = 0; i < records; i++) {
         integerPart = (rand() % (MODIFIER_JD - 15019)) + 15020;
         fractionalPart = (double)rand() / (RAND_MAX + 1.0);
         indexes[i].timeMark = integerPart + fractionalPart;
@@ -14,13 +14,16 @@ int generateFile(const char* fileName, size_t records) {
     }
     FILE* generatedFile = fopen(fileName, "w+b");
     if (generatedFile == NULL) {
+        free(indexes);
         return -1;
     }
     if (fwrite(indexes, sizeof(Index), records, generatedFile) < records) {
         fclose(generatedFile);
+        free(indexes);
         return -1;
     }
     fclose(generatedFile);
+    free(indexes);
     return 0;
 }
 

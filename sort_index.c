@@ -231,14 +231,22 @@ int main(int argc, char* argv[]) {
         printf("The working buffer size must be a multiple of the page size = %d and must be divisible by 256 without remainder.\n", getpagesize());
         exit(EXIT_FAILURE);
     }
-    numOfBlocks = strtol(argv[2], NULL, 10);
-    if (numOfBlocks % 2 != 0 || numOfBlocks < NUM_OF_CORES * 4) {
-        printf("The number of blocks must be a power of two and exceed the number of threads by at least 4 times.\n");
-        exit(EXIT_FAILURE);
-    }
     int numOfThreads = strtol(argv[3], NULL, 10);
     if (numOfThreads > NUM_OF_CORES * 8 || numOfThreads < NUM_OF_CORES) {
         printf("Number of threads should be in range from %d to %d\n", NUM_OF_CORES, NUM_OF_CORES * 8);
+        exit(EXIT_FAILURE);
+    }
+    numOfBlocks = strtol(argv[2], NULL, 10);
+    if (numOfBlocks % 2 != 0 || numOfBlocks < numOfThreads * 4) {
+        printf("The number of blocks must be a power of two and exceed the number of threads by at least 4 times.\n");
+        exit(EXIT_FAILURE);
+    }
+    if ((size_t)(memSize / numOfBlocks) < sizeof(Index)) {
+        printf("Size of block in bytes should be equal to or greater than %lu bytes.\nIncrease memsize or decrease blocks\n", sizeof(Index));
+        exit(EXIT_FAILURE);
+    }
+    if ((size_t)(memSize / numOfBlocks) % sizeof(Index) != 0) {
+        printf("Size of block in bytes should be divisible by %lu without remainder.\n", sizeof(Index));
         exit(EXIT_FAILURE);
     }
     char* fileName = argv[4];
