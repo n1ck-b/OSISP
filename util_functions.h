@@ -19,11 +19,22 @@ int allocateNewCluster(int numOfLatestCluster, int isDir);
 unsigned checkForExistenceOfFileOrDirectory(DirEntry* entries, unsigned short numOfEntries, char* entryName, unsigned char attr);
 int writeDirEntriesToCluster(unsigned short numOfCluster, DirEntry* entries);
 int writeDirEntriesToEmptyCluster(unsigned short clusterNum, DirEntry* entries);
-int countSubDirs(DirEntry* entries, unsigned short numOfEntries);
-struct timespec convertTime(time_t time);
+unsigned countSubDirs(DirEntry* entries, unsigned short numOfEntries);
+struct timespec convertTimeToTimespec(time_t time);
 unsigned short countClustersInChain(unsigned short startCluster);
 int writeBytesToFile(unsigned char startCluster, unsigned char* buffer);
 int rewriteDirEntries(unsigned short startCluster, DirEntry* entries, unsigned short numOfEntries);
 int rewriteRootDirEntries(DirEntry* entries, unsigned short numOfEntries);
+void freeClustersInChainExceptFirst(unsigned short firstCluster);
+unsigned short countFreeBytesInCluster(unsigned char* cluster);
+unsigned short* getClustersFromChain(unsigned short firstCluster, int* counter);
+int freeCluster(unsigned short numOfCluster);
+int zeroBytes(unsigned short numOfCluster, unsigned short numOfBytesToZero);
+time_t convertTimeFromTimespec(struct timespec tv);
+unsigned countDirSize(unsigned short startCluster);
+void freeAllClustersInChain(unsigned short firstCluster);
+int freeClusterIfNeeded(int index, unsigned short startClusterOfParentDir);
+int saveFatToFile();
+int saveFsInfoToFile();
 
 #endif //COURSEWORK_UTIL_FUNCTIONS_H

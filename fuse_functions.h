@@ -17,4 +17,9 @@ int sfsOpen (const char* path, struct fuse_file_info* fi);
 int sfsRead (const char* path, char* buffer, size_t bytes, off_t offset, struct fuse_file_info* fi);
 int sfsWrite (const char* path, const char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
 int sfsReaddir (const char* path, void* buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* fi);
+int sfsTruncate(const char* path, off_t size);
+int sfsUtimens (const char* path, const struct timespec tv[2]);
+int sfsRelease (const char* path, struct fuse_file_info* fi);
+int sfsUnlink (const char* path);
+int sfsRmdir (const char* path);
 #endif //COURSEWORK_FUSE_FUNCTIONS_H

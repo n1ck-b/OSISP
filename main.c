@@ -16,7 +16,12 @@ static const struct fuse_operations operations = {
     .open = sfsOpen,
     .read = sfsRead,
     .write = sfsWrite,
-    .readdir = sfsReaddir
+    .readdir = sfsReaddir,
+    .truncate = sfsTruncate,
+    .utimens = sfsUtimens,
+    .release = sfsRelease,
+    .unlink = sfsUnlink,
+    .rmdir = sfsRmdir
 };
 
 int main(int argc, char* argv[])

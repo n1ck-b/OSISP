@@ -3,7 +3,16 @@
 #include <time.h>
 #include <sys/stat.h>
 
-typedef struct DirEntry { //296 байт
+typedef enum {
+    ONLY_FOR_READ = 1,
+    HIDDEN = 2,
+    SYSTEM = 4,
+    VOLUME_LABEL = 8,
+    DIRECTORY = 16,
+    ARCHIVE = 32
+} Attributes;
+
+typedef struct DirEntry {
     char name [255]; //имя файла
     unsigned short numOfFirstCluster; //номер кластера, с которого начинается файл
     unsigned short sizeInBytes; //размер файла в байтах
