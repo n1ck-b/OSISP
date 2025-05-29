@@ -1027,7 +1027,6 @@ int sfsReaddir (const char* path, void* buf, fuse_fill_dir_t filler, off_t offse
     DirEntry* currentDirEntries = rootDirEntries; //dirEntry текущего каталога
     unsigned numOfSubDirs = 1024; //количество dirEntry текущего каталога
     for(int i = 0; i <= depth; i++) {
-        printf("loop for\n");
         int index;
         //если каталог не существует
         if (!findDir(componentsOfPath[i], currentDirEntries, &index, numOfSubDirs)) {
